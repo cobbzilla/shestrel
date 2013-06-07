@@ -1,0 +1,19 @@
+#!/bin/bash
+
+. $(dirname ${0})/kestrel_functions
+
+SPEC=${1}
+
+validate_single_arg ${0} ${SPEC}
+
+host=$(get_host ${SPEC})
+port=$(get_port ${SPEC})
+queue=$(get_queue ${SPEC})
+
+size=$(kestrel_size ${host} ${port} ${queue})
+if [ $(strlen $size) -eq 0 ] ; then
+  exit 2
+else
+  echo ${size}
+fi
+exit 0

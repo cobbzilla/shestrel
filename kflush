@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. $(dirname ${0})/kestrel_functions
+
+SPEC=${1}
+
+validate_single_arg ${0} ${SPEC}
+
+host=$(get_host ${SPEC})
+port=$(get_port ${SPEC})
+queue=$(get_queue ${SPEC})
+
+kestrel_flush ${host} ${port} ${queue}
+exit $?
+

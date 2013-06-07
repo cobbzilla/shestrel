@@ -1,0 +1,18 @@
+#!/bin/bash
+
+. $(dirname ${0})/kestrel_functions
+
+SPEC=${1}
+VALUE=${2}
+
+if [ "x${SPEC}" = "x" ] || [ "x${VALUE}" = "x" ] ; then
+  usage ${0} "[host[:port]/]queue value"
+  exit 1
+fi
+
+host=$(get_host ${SPEC})
+port=$(get_port ${SPEC})
+queue=$(get_queue ${SPEC})
+
+kestrel_set ${host} ${port} ${queue} ${VALUE}
+exit $?

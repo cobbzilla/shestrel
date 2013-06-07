@@ -1,0 +1,32 @@
+#!/bin/bash
+
+. $(dirname $0)/kestrel_functions
+
+FROM_SPEC=${1}
+TO_SPEC=${2}
+
+if [ "x${FROM_SPEC}" = "x" ] || [ "x${TO_SPEC}" = "x" ] ; then
+  usage $0 "[from-host[:from-port]/]from-queue [to-host[:to-port]/]to-queue"
+  exit 1
+fi
+
+from_host=$(get_host ${FROM_SPEC})
+from_port=$(get_port ${FROM_SPEC})
+from_queue=$(get_queue ${FROM_SPEC})
+
+to_host=$(get_host ${TO_SPEC})
+to_port=$(get_port ${TO_SPEC})
+to_queue=$(get_queue ${TO_SPEC})
+
+count=0
+while [ 1 ] ; do
+
+  VALUE=$(kestrel_get ${from_host} ${from_port} ${from_queue})
+  if [ $(strlen ${VALUE}) -eq 0 ] ; then
+    echo "Copied $count items" 
+    exit 0
+  fi
+
+  kestrel_set ${to_host} ${to_port} ${to_queue} ${VALUE}
+  count=`expr $count + 1`
+done

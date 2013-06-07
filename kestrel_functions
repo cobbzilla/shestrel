@@ -1,0 +1,116 @@
+#!/bin/bash
+
+DEFAULT_KESTREL_HOST="localhost"
+DEFAULT_KESTREL_PORT="22133"
+
+function usage () {
+  echo ""
+  echo "Usage: ${1} ${2}"
+  echo ""
+  echo "If no hostname is specified, ${DEFAULT_KESTREL_HOST} is default."
+  echo "If no port is specified, ${DEFAULT_KESTREL_PORT} is the default."
+  echo ""
+}
+
+function validate_single_arg () {
+  PROG=${1}
+  SPEC=${2}
+  if [ "x${SPEC}" = "x" ] ; then
+    usage ${PROG} "[host[:port]/]queue"
+    exit 1
+  fi
+}
+
+function strlen () {
+  echo $(echo -n ${1} | wc -c | tr -d ' ')
+}
+
+# Return the hostname for an argument in the form [host[:port]/]queue
+function get_host () {
+  if [ $(echo ${1} | grep ':' ) ] ; then 
+    echo $(echo ${1} | tr ':/' '\n' | head -n 1)
+  elif [ $(echo ${1} | grep '/' ) ] ; then 
+    echo $(echo ${1} | tr ':/' '\n' | head -n 1)
+  else
+    echo ${DEFAULT_KESTREL_HOST}
+  fi
+}
+
+# Return the hostname for an argument in the form host[:port]
+function get_host_no_queue () {
+  if [ $(echo ${1} | grep ':' ) ] ; then 
+    echo $(echo ${1} | tr ':' '\n' | head -n 1)
+  elif [ $(strlen ${1}) -gt 0 ] ; then
+    echo ${1}
+  else
+    echo ${DEFAULT_KESTREL_HOST}
+  fi
+}
+
+# Return the port for an argument in the form [host[:port]/]queue
+function get_port () {
+  if [ $(echo ${1} | grep ':' ) ] ; then 
+    echo $(echo ${1} | tr ':/' '\n' | head -n 2 | tail -n 1)
+  else
+    echo ${DEFAULT_KESTREL_PORT}
+  fi
+}
+
+# Return the port for an argument in the form host[:port]
+function get_port_no_queue () {
+  if [ $(echo ${1} | grep ':' ) ] ; then 
+    echo $(echo ${1} | tr ':' '\n' | tail -n 1)
+  else
+    echo ${DEFAULT_KESTREL_PORT}
+  fi
+}
+
+# Return the queue for an argument in the form [host[:port]/]queue
+function get_queue () {
+  echo $(echo ${1} | tr ':/' '\n' | tail -n 1)
+}
+
+# Get a value from a queue
+function kestrel_get () {
+  host=${1}
+  port=${2}
+  queue=${3}
+  echo $(echo "GET ${queue}" | nc ${host} ${port} | sed '1,1d' | sed '$d')
+}
+
+# Add a value to a queue
+function kestrel_set () {
+  host=${1}
+  port=${2}
+  queue=${3}
+  value=${4}
+  echo "SET ${queue} 0 0 $(strlen ${value})
+${value}
+" | nc ${host} ${port} | grep -v "^STORED"
+  return $?
+}
+
+# Show queue size
+function kestrel_size () {
+  host=${1}
+  port=${2}
+  queue=${3}
+  echo $(echo "STATS" | nc ${host} ${port} | grep "STAT queue_${queue}_items" | awk '{print $NF}')
+}
+
+# Flush a queue
+function kestrel_flush () {
+  host=${1}
+  port=${2}
+  queue=${3}
+  echo "FLUSH ${queue}" | nc ${host} ${port} | grep -v "^END"
+  return $?
+}
+
+# Flush all queues
+function kestrel_flush_all () {
+  host=${1}
+  port=${2}
+  echo "FLUSH_ALL" | nc ${host} ${port}
+  return $?
+}

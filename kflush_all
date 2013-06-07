@@ -1,0 +1,11 @@
+#!/bin/bash
+
+. $(dirname ${0})/kestrel_functions
+
+SPEC=${1}
+
+host=$(get_host_no_queue ${SPEC})
+port=$(get_port_no_queue ${SPEC})
+
+kestrel_flush_all ${host} ${port}
+exit $?

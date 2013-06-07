@@ -11,6 +11,14 @@ A set of simple shell scripts for working with kestrel queues. Commands supporte
 * kcopy: copy all items from one queue to another queue
 * kpopulate: write many items to a queue
 
+## Referencing a queue
+For all commands (except kflush_all), the format is "[host[:port]/]queue" where
+* host is optional and will default to localhost
+* port is optional and will default to 22133
+* queue is required
+
+For kflush_all, the format is "host[:port]" where port is optional and will default to 22133
+
 ## Exit codes
 * Commands exit with status 0 upon success. 
 * Exit status 1 indicates a problem with the command arguments.

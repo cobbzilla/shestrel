@@ -12,9 +12,9 @@ A set of simple shell scripts for working with kestrel queues. Commands supporte
 * kpopulate: write many items to a queue
 
 ## Exit codes
-Commands exit with status 0 upon success. 
-Exit status 1 indicates a problem with the command arguments.
-kget exits with status 2 if the queue is empty.
+* Commands exit with status 0 upon success. 
+* Exit status 1 indicates a problem with the command arguments.
+* kget exits with status 2 if the queue is empty.
 
 ## Examples
     $ ksize foo

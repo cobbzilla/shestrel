@@ -70,3 +70,6 @@ where:
     $ kset localhost:22133/foo some_value
     $ kget localhost:22133/foo
     some_value
+    $ kset localhost/foo one_more_value
+    $ kget localhost/foo
+    one_more_value

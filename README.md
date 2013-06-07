@@ -13,15 +13,20 @@ A set of simple shell scripts for working with kestrel queues. Commands supporte
 
 ## Referencing a queue
 For all commands (except kflush_all), the format is
+
     [host[:port]/]queue
 where:
+
 * host is optional and will default to localhost
 * port is optional and will default to 22133
 * queue is required
 
 For kflush_all, the format is
+
     host[:port]
-where port is optional and will default to 22133
+where:
+* port is optional and will default to 22133
+* host is required
 
 ## Exit codes
 * Commands exit with status 0 upon success. 

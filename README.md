@@ -67,3 +67,6 @@ where:
     0
     $ ksize bar
     0
+    $ kset localhost:22133/foo some_value
+    $ kget localhost:22133/foo
+    some_value

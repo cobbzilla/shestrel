@@ -23,7 +23,7 @@ while [ 1 ] ; do
 
   VALUE=$(kestrel_get ${from_host} ${from_port} ${from_queue})
   if [ $(strlen ${VALUE}) -eq 0 ] ; then
-    echo "Copied $count items" 
+    echo "Moved $count items" 
     exit 0
   fi
 

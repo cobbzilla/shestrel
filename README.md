@@ -8,7 +8,7 @@ A set of simple shell scripts for working with kestrel queues. Commands supporte
 * ksize: show queue size
 * kflush: flush a queue
 * kflush_all: flush all queues
-* kmove: copy all items from one queue to another queue
+* kmove: move all items from one queue to another queue
 * kpopulate: write many items to a queue
 
 ## Referencing a queue

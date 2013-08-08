@@ -31,7 +31,7 @@ where:
 ## Exit codes
 * Commands exit with status 0 upon success. 
 * Exit status 1 indicates a problem with the command arguments.
-* kget exits with status 2 if the queue is empty.
+* kget and kpeek exit with status 2 if the queue is empty.
 
 ## Examples
     $ ksize foo

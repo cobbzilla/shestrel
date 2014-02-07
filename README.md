@@ -6,6 +6,7 @@ A set of simple shell scripts for working with kestrel queues. Commands supporte
 * kget: read from a queue
 * kset: write to a queue
 * ksize: show queue size
+* kpeek: peek at the next element in a queue
 * kflush: flush a queue
 * kflush_all: flush all queues
 * kmove: move all items from one queue to another queue
